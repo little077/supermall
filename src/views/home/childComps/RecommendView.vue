@@ -26,19 +26,19 @@ export default {
 <style>
  .recommend{
      display: flex;
-     text-align: center;
+  
      font-size: 12px;
      padding: 10px 0 20px;
      border-bottom: 8px solid #eee;
      width:100%;
  }
  .recommend-item{
-     flex:1
+     flex:1;
+     text-align: center;
  }
  .recommend-item img{
-     width: 70px;
+     width: 60px;
      height: 70px;
-     
      margin-bottom: 10px;
  }
 </style>

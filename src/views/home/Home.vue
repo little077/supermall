@@ -4,24 +4,181 @@
     <home-swiper :banners="banners"/>
     <recommend-view :recommends="recommends"/>
     <feature-view />
+    <tab-control :titles="['流行','新款','精选']" class="tab-control" />
+   <ul>
+     <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li>
+      <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li>
+      <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li>
+      <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li>
+      <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li>
+      <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li>
+
+      <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li>
+      <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li>
+      <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li>v <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li> <li>1</li>
+     <li>2</li>
+     <li>3</li>
+     <li>4</li>
+     <li>5</li>
+     <li>6</li>
+   </ul>
     </div>
 </template>
 
 <script>
 import NavBar from "components/common/navbar/NavBar"
 import HomeSwiper from "./childComps/HomeSwiper"
-import FeatureView from "./childComps/FeatureView"
 import RecommendView from './childComps/RecommendView'
+import FeatureView from "./childComps/FeatureView"
+import TabControl from "components/content/tabControl/TabControl.vue"
 import {getHomeMultidata} from "network/home"
+
   export default {
    name:"Home",
    components:{
      NavBar,
      HomeSwiper,
      RecommendView,
-     FeatureView
+     FeatureView,
+     TabControl
    },
    data(){
+ 
      return {
        banners:[],
        recommends:[]
@@ -51,5 +208,8 @@ import {getHomeMultidata} from "network/home"
   right: 0;
   z-index: 9;
 }
-
+.tab-control{
+  position: sticky;
+  top:44px;
+}
 </style>
