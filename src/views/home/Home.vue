@@ -1,165 +1,18 @@
 <template>
 <div id="home">
+   <!-- 顶部 -->
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <home-swiper :banners="banners"/>
+    <!-- 滚动托管部分 -->
+    <scroll class="content" ref="scroll">
+       <home-swiper :banners="banners"/>
     <recommend-view :recommends="recommends"/>
     <feature-view />
     <tab-control :titles="['流行','新款','精选']"
     @tabClick="tabClick"
      class="tab-control" />
     <goods-list :goods="showGoods" />
-   <ul>
-     <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li>
-      <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li>
-      <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li>
-      <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li>
-      <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li>
-      <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li>
-
-      <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li>
-      <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li>
-      <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li>v <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li> <li>1</li>
-     <li>2</li>
-     <li>3</li>
-     <li>4</li>
-     <li>5</li>
-     <li>6</li>
-   </ul>
+    </scroll>
+    <back-top @click.native="backTop"/>
     </div>
 </template>
 
@@ -170,8 +23,9 @@ import RecommendView from './childComps/RecommendView'
 import FeatureView from "./childComps/FeatureView"
 import TabControl from "components/content/tabControl/TabControl.vue"
 import GoodsList from "components/content/goods/GoodsList.vue"
-
+import Scroll from 'components/common/scroll/Scroll.vue'
 import {getHomeMultidata,getHomeGoods} from "network/home"
+import BackTop from "components/content/backTop/BackTop.vue"
 
   export default {
    name:"Home",
@@ -181,8 +35,11 @@ import {getHomeMultidata,getHomeGoods} from "network/home"
      RecommendView,
      FeatureView,
      TabControl,
-     GoodsList
-   
+     GoodsList,
+     Scroll,
+     BackTop
+    
+    
    },
    methods:{
      getHomeMultidata(){
@@ -198,6 +55,9 @@ import {getHomeMultidata,getHomeGoods} from "network/home"
           this.goods[type].list.push(...res.data.list)
           this.goods[type].page++
         })
+        },
+        backTop(){
+           this.$refs.scroll.scrollTo(0,0)
         },
         // 事件监听
         tabClick(index){
@@ -246,6 +106,8 @@ import {getHomeMultidata,getHomeGoods} from "network/home"
 <style scoped>
 #home{
   padding-top: 44px;
+  position: relative;
+  height: 100vh;
 }
 .home-nav{
   background-color: var(--color-tint);
@@ -261,5 +123,13 @@ import {getHomeMultidata,getHomeGoods} from "network/home"
   position: sticky;
   top:44px;
   z-index: 9;
+}
+.content{
+  position: absolute;
+  overflow: hidden;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
 }
 </style>
