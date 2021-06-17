@@ -3,7 +3,12 @@
    <!-- 顶部 -->
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
     <!-- 滚动托管部分 -->
-    <scroll class="content" ref="scroll">
+    <scroll class="content" 
+    ref="scroll" :probe-type='3'
+     @scrollevent="scrollcontent"
+     :pull-up-load="true" 
+    @pullingUp='loadMore' 
+     >
        <home-swiper :banners="banners"/>
     <recommend-view :recommends="recommends"/>
     <feature-view />
@@ -12,7 +17,7 @@
      class="tab-control" />
     <goods-list :goods="showGoods" />
     </scroll>
-    <back-top @click.native="backTop"/>
+    <back-top @click.native="backTop" v-show="isShow"/>
     </div>
 </template>
 
@@ -42,6 +47,13 @@ import BackTop from "components/content/backTop/BackTop.vue"
     
    },
    methods:{
+     loadMore(){
+      this.getHomeGoods(this.currentType)
+     },
+     scrollcontent(position){
+      this.isShow=(-(position.y)>1000)
+       
+     },
      getHomeMultidata(){
         getHomeMultidata().then(res=>
         {
@@ -54,6 +66,8 @@ import BackTop from "components/content/backTop/BackTop.vue"
         {
           this.goods[type].list.push(...res.data.list)
           this.goods[type].page++
+          /**完成一次上拉加载更多，再次回调 */
+          this.$refs.scroll.scroll.finishPullUp()
         })
         },
         backTop(){
@@ -78,6 +92,7 @@ import BackTop from "components/content/backTop/BackTop.vue"
  
      return {
        banners:[],
+       isShow:false,
        recommends:[],
        currentType:'pop',
       //  请求的数据结构
@@ -124,12 +139,16 @@ import BackTop from "components/content/backTop/BackTop.vue"
   top:44px;
   z-index: 9;
 }
-.content{
+/* .content{
   position: absolute;
   overflow: hidden;
   top: 44px;
   bottom: 49px;
   left: 0;
   right: 0;
+} */
+.content{
+  height: calc(100% - 44px);
+  overflow: hidden;
 }
 </style>

@@ -10,9 +10,19 @@
 import BScroll from "better-scroll"
 export default {
   name:'Scroll',
+  props:{
+    probeType:{
+      type:Number,
+      default:1
+    },
+    pullUpLoad:{
+      type:Boolean,
+      default:false
+    }
+  },
   data(){
       return {
-          scroll:null
+          scroll:null,
       }
   },
   mounted(){
@@ -24,6 +34,12 @@ export default {
          observeImage:true,
          probeType:this.probeType,
          pullUpLoad:this.pullUpLoad 
+      }),
+      this.scroll.on('scroll',position=>
+        this.$emit('scrollevent',position))
+        /** */
+      this.scroll.on('pullingUp',()=>{
+        this.$emit('pullingUp')
       })
   },
   methods:{
