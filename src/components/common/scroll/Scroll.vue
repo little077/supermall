@@ -8,6 +8,8 @@
 
 <script>
 import BScroll from "better-scroll"
+import Pullup from '@better-scroll/pull-up'
+BScroll.use(Pullup)
 export default {
   name:'Scroll',
   props:{
@@ -29,11 +31,12 @@ export default {
   this.scroll = new BScroll(this.$refs.wrapper,{
          click:true,
          observeDOM:true,
-         mouseWheel:true,
-         disableTouch:false,
+        //  mouseWheel:true,
+        //  disableTouch:false,
          observeImage:true,
          probeType:this.probeType,
-         pullUpLoad:this.pullUpLoad 
+         pullUpLoad: true,
+        //  pullingUp:true
       }),
       this.scroll.on('scroll',position=>
         this.$emit('scrollevent',position))

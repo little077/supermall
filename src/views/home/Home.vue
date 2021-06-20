@@ -2,19 +2,28 @@
 <div id="home">
    <!-- 顶部 -->
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <tab-control :titles="['流行','新款','精选']"
+    @tabClick="tabClick"
+     ref="controlitem1"
+    v-show="isTabFixed"
+    />
     <!-- 滚动托管部分 -->
     <scroll class="content" 
     ref="scroll" :probe-type='3'
      @scrollevent="scrollcontent"
      :pull-up-load="true" 
-    @pullingUp='loadMore' 
-     >
-       <home-swiper :banners="banners"/>
+     @pullingUp='loadMore' >
+       <home-swiper
+        :banners="banners"
+        @imgLoad="imgLoad"
+       />
     <recommend-view :recommends="recommends"/>
     <feature-view />
     <tab-control :titles="['流行','新款','精选']"
     @tabClick="tabClick"
-     class="tab-control" />
+    ref="controlitem2"
+    v-show="!isTabFixed"
+    />
     <goods-list :goods="showGoods" />
     </scroll>
     <back-top @click.native="backTop" v-show="isShow"/>
@@ -47,12 +56,18 @@ import BackTop from "components/content/backTop/BackTop.vue"
     
    },
    methods:{
+     imgLoad(){
+     this.taboffsetTop= this.$refs.controlitem2.$el.offsetTop
+     },
      loadMore(){
       this.getHomeGoods(this.currentType)
      },
      scrollcontent(position){
+      //判断backTop是否显示
       this.isShow=(-(position.y)>1000)
-       
+      //判断tabControl是否吸顶
+       this.isTabFixed= ((-position.y)>543)
+     
      },
      getHomeMultidata(){
         getHomeMultidata().then(res=>
@@ -84,8 +99,10 @@ import BackTop from "components/content/backTop/BackTop.vue"
              break
                case 2:
              this.currentType='sell'
-             break
+             break 
          }
+          this.$refs.controlitem1.currentIndex=index
+           this.$refs.controlitem2.currentIndex=index
         }
    },
    data(){
@@ -95,12 +112,17 @@ import BackTop from "components/content/backTop/BackTop.vue"
        isShow:false,
        recommends:[],
        currentType:'pop',
+
+       saveY:0,
+       //吸顶效果判断
+       isTabFixed:false,
       //  请求的数据结构
        goods:{
            'pop':{page:0,list:[]},
            'new':{page:0,list:[]},
            'sell':{page:0,list:[]}
-       }
+       },
+       taboffsetTop:0
      }
    },
    computed:{
@@ -113,14 +135,20 @@ import BackTop from "components/content/backTop/BackTop.vue"
       this.getHomeGoods('pop')
        this.getHomeGoods('new')
         this.getHomeGoods('sell')
-    
+    },
+    activated(){
+      this.$refs.scroll.scroll.refresh()
+      this.$refs.scroll.scrollTo(0,this.saveY,0)
+    },
+    deactivated(){
+      this.saveY = this.$refs.scroll.scroll.y  
     }
   }
 </script>
 
 <style scoped>
 #home{
-  padding-top: 44px;
+  /* padding-top: 44px; */
   position: relative;
   height: 100vh;
 }
@@ -128,17 +156,18 @@ import BackTop from "components/content/backTop/BackTop.vue"
   background-color: var(--color-tint);
   color:#fff;
   font-size:16px;
-  position: fixed;
+  /**原生js */
+  /* position: fixed;
   left: 0;
   top: 0;
-  right: 0;
-  z-index: 9;
+  right: 0;*/
+ 
 }
-.tab-control{
+/* .tab-control{
   position: sticky;
   top:44px;
   z-index: 9;
-}
+} */
 /* .content{
   position: absolute;
   overflow: hidden;
@@ -151,4 +180,5 @@ import BackTop from "components/content/backTop/BackTop.vue"
   height: calc(100% - 44px);
   overflow: hidden;
 }
+
 </style>
