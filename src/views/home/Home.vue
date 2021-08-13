@@ -1,6 +1,10 @@
 <template>
 <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+     <tab-control :titles="['流行','新款','精选']"
+     v-show="tabcontrolfixed"
+     @tabClick='tabClick'
+     class="tab-control" ref="tabControl1" />
     <scroll class="content"
      ref="backTo" 
      :probe-type='3'
@@ -8,12 +12,12 @@
       :pull-up-load="true"
       @pullingUp='loadMore'
     >
-              <home-swiper :banners="banners"/>
+    <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad" />
     <recommend-view :recommends="recommends"/>
     <feature-view />
     <tab-control :titles="['流行','新款','精选']"
      @tabClick='tabClick'
-     class="tab-control" />
+     class="tab-control" ref="tabControl" />
     <goods-list :goods='showGoods' />
 
     </scroll>
@@ -61,7 +65,8 @@ import BackTop from 'components/content/backTop/BackTop'
          'sell':{page:0,list:[]},
        },
        currentType:'pop',
-       isShowBackTop:false
+       isShowBackTop:false,
+       tabcontrolfixed:false
      }
    },
     created(){
@@ -76,6 +81,12 @@ import BackTop from 'components/content/backTop/BackTop'
     },
     methods:{ 
       /**
+       * 加载轮播图是否完成的方法
+       */
+      swiperImageLoad(){
+        console.log(this.$refs.tabControl.$el.offsetTop)
+      },
+      /**
        * 下拉加载更多
        */
       loadMore(){
@@ -85,13 +96,24 @@ import BackTop from 'components/content/backTop/BackTop'
        * 事件监听方法
        */
       contentScroll(position){
+        /**
+         * 判断返回顶部是否显示
+         */
         if(position.y<=-1000){
           this.isShowBackTop=true
         }
         else{
           this.isShowBackTop=false
         }
-
+        /**
+         * 判断tabcontrol是否显示
+         */
+        if(-position.y>=539){
+           this.tabcontrolfixed=true
+        }
+        else{
+          this.tabcontrolfixed=false
+        }
       },
       //回到顶部，父组件使用.native监听事件使用子组件中的方法
       backTop(){
@@ -108,6 +130,8 @@ import BackTop from 'components/content/backTop/BackTop'
         else{
           this.currentType='sell'
         }
+        this.$refs.tabControl1.currentIndex=index
+        this.$refs.tabControl.currentIndex=index
       },
       /**
        * 网络请求方法
@@ -141,16 +165,11 @@ import BackTop from 'components/content/backTop/BackTop'
   background-color: var(--color-tint);
   color:#fff;
   font-size:16px;
-  position: fixed;
+  position: fixed; 
   left: 0;
   top: 0;
   right: 0;
-  z-index: 9;
-}
-.tab-control{
-  position: sticky;
-  top:44px;
-  z-index: 9;
+  z-index: 9; 
 }
 .content{
   overflow: hidden;
@@ -159,5 +178,9 @@ import BackTop from 'components/content/backTop/BackTop'
   left: 0;
   right: 0;
   top:44px;
+}
+.tab-control{
+  position: relative;
+  z-index: 9;
 }
 </style>
