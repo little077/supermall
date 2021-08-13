@@ -84,7 +84,10 @@ import BackTop from 'components/content/backTop/BackTop'
        * 加载轮播图是否完成的方法
        */
       swiperImageLoad(){
-        console.log(this.$refs.tabControl.$el.offsetTop)
+        // console.log(this.$refs.tabControl.$el.offsetTop)
+        /**
+         * 轮播图加载完成发现对offsetTop判断影响小，所以放在滚动位置直接判断
+         */
       },
       /**
        * 下拉加载更多
@@ -108,7 +111,7 @@ import BackTop from 'components/content/backTop/BackTop'
         /**
          * 判断tabcontrol是否显示
          */
-        if(-position.y>=539){
+        if(-position.y>=this.$refs.tabControl.$el.offsetTop){
            this.tabcontrolfixed=true
         }
         else{
