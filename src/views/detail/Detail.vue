@@ -8,13 +8,14 @@
      <detail-goods-info :detailInfo="detailInfo"></detail-goods-info>
      <detail-param-info :paramInfo="paramInfo"></detail-param-info>
      <detail-comment-info :commentInfo="commentInfo"></detail-comment-info>
+     <goods-list :goods="recommends"></goods-list>
      </scroll>
   </div>
 </template>
 
 <script>
 import DetailNavBar from './childComps/DetailNavBar.vue'
-import {getDetail,Goods,Shop,GoodsParam} from 'network/detail.js'
+import {getDetail,Goods,Shop,GoodsParam,getRecommend} from 'network/detail.js'
 import DetailSwiper from './childComps/DetailSwiper.vue'
 import DetailBaseInfo from './childComps/DetailBaseInfo.vue'
 import DetailShopInfo from './childComps/DetailShopInfo.vue'
@@ -22,6 +23,7 @@ import Scroll from '../../components/common/scroll/Scroll.vue'
 import DetailGoodsInfo from './childComps/DetailGoodsInfo.vue'
 import DetailParamInfo from './childComps/DetailParamInfo.vue'
 import DetailCommentInfo from './childComps/DetailCommentInfo.vue'
+import GoodsList from "components/content/goods/GoodsList"
 
 
 export default {
@@ -36,6 +38,7 @@ export default {
     DetailParamInfo,
     commonInfo:{},
     DetailCommentInfo,
+    GoodsList,
 
 
   },
@@ -47,7 +50,8 @@ export default {
          shop:{},
          detailInfo:{},
          paramInfo:{},
-         commentInfo:{}
+         commentInfo:{},
+         recommends:[]
       }
   },
   created(){
@@ -69,12 +73,13 @@ export default {
         * 取出评论信息
          */
         if(data.rate.cRate!== 0){
-           this.commentInfo = data.rate.list[0]
-        }
+           this.commentInfo = data.rate.list[0]   }
 
-           })
-     
-     
+           })  
+      /**
+       * 请求推荐数据
+       */
+      getRecommend().then(res=>this.recommends=res.data.list)
   },
 
 }
