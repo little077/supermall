@@ -43,7 +43,7 @@ export default {
         click:true,
         observeImage: true,
         probeType:this.probeType,
-        pullUpLoad:this.pullUpLoad
+        pullUpLoad:true
   })
   this.scroll.on('scroll',(position)=>{
     this.$emit('scroll',position)
@@ -59,6 +59,6 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 
 </style>

@@ -16,7 +16,7 @@ import MainTabBar from 'components/content/mainTabbar/MainTabBar'
   }
 }
 </script>
-<style>
+<style scoped>
 @import "assets/css/base.css";
 </style>
 
