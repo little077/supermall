@@ -1,15 +1,17 @@
 <template>
   <div id="detail">
-     <detail-nav-bar class="detail-nav"/>
-     <scroll class="content">
+     <detail-nav-bar class="detail-nav" @titleClick="titleClick" ref="navBar" />
+     <scroll class="content" ref="backTo" @scroll="scroll">
      <detail-swiper :topImages=topImages></detail-swiper>
      <detail-base-info :goods="goods" />
      <detail-shop-info :shop="shop"></detail-shop-info>
-     <detail-goods-info :detailInfo="detailInfo"></detail-goods-info>
-     <detail-param-info :paramInfo="paramInfo"></detail-param-info>
-     <detail-comment-info :commentInfo="commentInfo"></detail-comment-info>
-     <goods-list :goods="recommends"></goods-list>
+     <detail-goods-info :detailInfo="detailInfo" @imgload="imageload"></detail-goods-info>
+     <detail-param-info :paramInfo="paramInfo" ref="param"></detail-param-info>
+     <detail-comment-info :commentInfo="commentInfo" ref="comment"></detail-comment-info>
+     <goods-list :goods="recommends" ref="goodlist" ></goods-list>
      </scroll>
+     <detail-bottom-bar @addToCart="addCart"></detail-bottom-bar>
+     <back-top @click.native="backTop" v-show="isShowBackTop" ></back-top>
   </div>
 </template>
 
@@ -24,10 +26,73 @@ import DetailGoodsInfo from './childComps/DetailGoodsInfo.vue'
 import DetailParamInfo from './childComps/DetailParamInfo.vue'
 import DetailCommentInfo from './childComps/DetailCommentInfo.vue'
 import GoodsList from "components/content/goods/GoodsList"
+import DetailBottomBar from './childComps/DetailBottomBar.vue'
+import BackTop from 'components/content/backTop/BackTop.vue'
 
 
 export default {
   name:'Detail',
+  methods:{
+     backTop(){
+        this.$refs.backTo.backTop(0,0)
+      },
+    titleClick(index){
+      this.$refs.backTo.backTop(0,this.themeTops[index]+44,300)
+    },
+    scroll(position){
+     /**两个都是负值，tm的太不好判断了。这块有个问题，scroll方法调用太多，会影响性能 */
+       if(((position.y<0)||(position.y>=0))&&position.y>this.themeTops[1]+44){
+        this.Index=0
+      }
+      else if(position.y<=(this.themeTops[1]+44)&&position.y>(this.themeTops[2]+44)){
+        this.Index=1
+      }
+       else if(position.y<=(this.themeTops[2]+44)&&position.y>(this.themeTops[3]+44)){
+        this.Index=2
+      }
+      else{
+        this.Index=3
+      }
+      this.$refs.navBar.currentIndex=this.Index
+      if((-position.y>=1000)){
+        this.isShowBackTop=true
+      }
+      else{
+        this.isShowBackTop=false
+      }
+    },
+    imageload(){
+     this.themeTops=[]
+     this.themeTops.push(0)
+     this.themeTops.push(-this.$refs.param.$el.offsetTop)
+     this.themeTops.push(-this.$refs.comment.$el.offsetTop)
+     this.themeTops.push(-this.$refs.goodlist.$el.offsetTop)
+    
+    },
+    addCart() {
+        // 2.将商品信息添加到Store中
+        const obj = {}
+        obj.iid = this.iid
+        obj.imgURL = this.topImages[0]
+        obj.title = this.goods.title
+        obj.desc = this.goods.desc
+        obj.price = this.goods.realPrice
+        // this.$store.dispatch('addToCart', obj).then(() => {
+	       //  this.$toast({message: '加入购物车成功'})
+        // })
+        // this.addCart(obj).then(() => {
+	      //   this.$toast({message: '加入购物车成功'})
+        // })
+         this.$store.commit('addCart',obj)
+       
+	    },
+  },
+  // updated(){
+
+  // },
+  // mounted(){
+   
+  // },
   components:{
     DetailNavBar,
     DetailSwiper,
@@ -39,6 +104,8 @@ export default {
     commonInfo:{},
     DetailCommentInfo,
     GoodsList,
+    DetailBottomBar,
+    BackTop,
 
 
   },
@@ -51,7 +118,10 @@ export default {
          detailInfo:{},
          paramInfo:{},
          commentInfo:{},
-         recommends:[]
+         recommends:[],
+         themeTops:[],
+         Index:0,
+         isShowBackTop:false,
       }
   },
   created(){
@@ -81,6 +151,9 @@ export default {
        */
       getRecommend().then(res=>this.recommends=res.data.list)
   },
+  // mounted(){
+  //   console.log(this.$refs.pinglun.$el.offsetTop)
+  // }
 
 }
 </script>
@@ -93,7 +166,7 @@ export default {
   height: 100vh;
 }
 .content{
-  height: calc(100% - 44px);
+  height: calc(100% - 93px);
 }
 .detail-nav{
   position: relative;

@@ -31,7 +31,7 @@
 	    imgLoad() {
       /**better-scroll由于修复了bug，方法无用，但保留 */
         if (++this.counter === this.imagesLength) {
-          this.$emit('imageLoad');
+          this.$emit('imgload');
         }
 	    }
     },
