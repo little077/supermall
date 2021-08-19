@@ -1,7 +1,7 @@
 <template>
-  <div class="check-button" :class="{check:isShow}"
+  <div class="check-button" :class="{check:isShow } "
   @click="show">
-      <img src="~assets/img/cart/tick.svg">
+        <img src="~assets/img/cart/tick.svg">
   </div>
 </template>
 
@@ -16,7 +16,8 @@ export default {
   methods:{
     show(){
       this.isShow=!this.isShow
-    }
+    },
+
   }
 }
 </script>
