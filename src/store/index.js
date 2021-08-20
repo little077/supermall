@@ -20,6 +20,7 @@ export default new Vuex.Store({
       }
       else{
         payLoad.count=1
+        payLoad.checked=true
         state.cartList.push(payLoad)
       }
     
