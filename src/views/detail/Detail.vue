@@ -83,7 +83,9 @@ export default {
         // this.addCart(obj).then(() => {
 	      //   this.$toast({message: '加入购物车成功'})
         // })
-         this.$store.commit('addCart',obj)
+        /**这里dispatch发送事件到vuex里面调用里面的actions里面的方法，因为可以回调，不能单纯的在页面显示，而修改vuex状态只能通过mutations 所以重构了vuex里面的代码*/
+         this.$store.dispatch('addCart',obj).then(res=>
+         this.$toast.show(res,2000))
        
 	    },
   },
